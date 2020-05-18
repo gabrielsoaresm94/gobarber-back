@@ -1,0 +1,8 @@
+node_modules
+tmp/*
+
+!tmp/.gitkeep
+
+.vscode/
+
+*.example
