@@ -4,9 +4,9 @@ import { getCustomRepository } from 'typeorm';
 import AppError from '../../../shared/errors/AppError';
 
 import Appointment from '../infra/typeorm/entities/Appointment';
-import AppointmentRepository from '../repositories/AppointmentsRepository';
+import AppointmentRepository from '../infra/typeorm/repositories/AppointmentsRepository';
 
-interface RequestDTO {
+interface IRequestDTO {
   provider_id: string;
   date: Date;
 }
@@ -15,7 +15,7 @@ class CreateAppointmentService {
   public async execute({
     provider_id,
     date,
-  }: RequestDTO): Promise<Appointment> {
+  }: IRequestDTO): Promise<Appointment> {
     const appointmentsRepository = getCustomRepository(AppointmentRepository);
 
     const appointmentDate = startOfHour(date);
