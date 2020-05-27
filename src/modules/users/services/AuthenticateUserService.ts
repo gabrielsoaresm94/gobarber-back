@@ -1,5 +1,3 @@
-// import { getRepository } from 'typeorm';
-import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
 
@@ -8,6 +6,7 @@ import AppError from '../../../shared/errors/AppError';
 import User from '../infra/typeorm/entities/User';
 import authConfig from '../../../config/auth';
 import IUsersRepository from '../repositories/IUsersRepository';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
   email: string;
@@ -23,13 +22,18 @@ interface IResponse {
 class AuthenticateUserService {
   private usersRepository: IUsersRepository;
 
-  constructor(@inject('UsersRepository') usersRepository: IUsersRepository) {
-    this.usersRepository = usersRepository;
-  }
+  private hashProvider: IHashProvider;
 
-  // constructor(
-  //   @inject('UsersRepository') private usersRepository: IUsersRepository,
-  // ) {}
+  constructor(
+    @inject('UsersRepository')
+    usersRepository: IUsersRepository,
+
+    @inject('HashProvider')
+    hashProvider: IHashProvider,
+  ) {
+    this.usersRepository = usersRepository;
+    this.hashProvider = hashProvider;
+  }
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
     const user = await this.usersRepository.findByEmail(email);
@@ -41,7 +45,10 @@ class AuthenticateUserService {
     // user.password - Senha criptografada
     // password - Senha não-criptografada
 
-    const passwordMatched = await compare(password, user.password);
+    const passwordMatched = await this.hashProvider.compareHash(
+      password,
+      user.password,
+    );
 
     if (!passwordMatched) {
       throw new AppError('Email ou senha incorretos!');
