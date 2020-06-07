@@ -40,6 +40,7 @@ class ResetPasswordService {
     this.hashProvider = hashProvider;
   }
 
+  // Método para pegar hora atual da aplicação
   public async timeNow(): Promise<number> {
     const getTheHour: Date = new Date(Date.now());
 
@@ -48,7 +49,6 @@ class ResetPasswordService {
 
   public async execute({ token, password }: IRequest): Promise<void> {
     const userToken = await this.usersTokensRepository.findByToken(token);
-    console.log(userToken);
 
     if (!userToken) {
       throw new AppError('Token não existe');
@@ -63,27 +63,14 @@ class ResetPasswordService {
     const tokenCreatedAt: Date = userToken.created_at;
     const getTimeNow = await this.timeNow();
 
-    console.log(getTimeNow);
-    console.log(getHours(tokenCreatedAt));
-    // console.log(getTimeNow * 3600000);
-    // console.log(getHours(tokenCreatedAt) * 3600000);
-    console.log(
+    if (
       differenceInHours(
         getTimeNow * 3600000,
         getHours(tokenCreatedAt) * 3600000,
-      ),
-      // > 2,
-    );
-
-    /* Comentado até resolver o problema da data no Postgres */
-    // if (
-    //   differenceInHours(
-    //     getTimeNow * 3600000,
-    //     getHours(tokenCreatedAt) * 3600000,
-    //   ) > 2
-    // ) {
-    //   throw new AppError('Token expirado');
-    // }
+      ) > 2
+    ) {
+      throw new AppError('Token expirado');
+    }
 
     user.password = await this.hashProvider.generateHash(password);
 
