@@ -78,14 +78,6 @@ describe('SendForgtPasswordEmail', () => {
 
     const { token } = await fakeUsersTokensRepository.generate(user.id);
 
-    // const generateHash = jest.spyOn(fakeHashProvider, 'generateHash');
-
-    // jest.spyOn(Date, 'now').mockImplementationOnce(() => {
-    //   const customDate = new Date();
-
-    //   return customDate.setDate(customDate.getHours() + 3);
-    // });
-
     jest.spyOn(resetPassword, 'timeNow').mockImplementation(
       async (): Promise<number> => {
         const getTheHour: Date = new Date(Date.now());
@@ -100,10 +92,5 @@ describe('SendForgtPasswordEmail', () => {
         token,
       }),
     ).rejects.toBeInstanceOf(AppError);
-
-    // const updateUser = await fakeUsersRepository.findById(user.id);
-
-    // expect(generateHash).toBeCalledWith('senhaforte');
-    // expect(updateUser?.password).toBe('senhaforte');
   });
 });

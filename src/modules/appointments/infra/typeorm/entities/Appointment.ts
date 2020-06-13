@@ -27,6 +27,15 @@ class Appointment {
   @JoinColumn({ name: 'provider_id' })
   provider: User;
 
+  // Indica uma coluna no Banco de Dados
+  @Column()
+  user_id: string;
+
+  // Relacionamento a nível de aplicação
+  @ManyToOne(() => User) // Muitos para um - Vários agendamentos para um usuário
+  @JoinColumn({ name: 'user_id' }) // Coluna que faz o o relacionamento - user_id
+  user: User;
+
   @Column('timestamp with time zone')
   date: Date;
 
