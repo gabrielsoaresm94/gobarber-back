@@ -9,7 +9,7 @@ export default class ProviderMonthAvailabilityController {
       const { provider_id } = req.params;
       const { month, year } = req.body;
 
-      // Problema
+      /* Problemas */
       const listProviderMonthAvailability = container.resolve(
         ListProviderMonthAvailabilityService,
       );
@@ -21,13 +21,13 @@ export default class ProviderMonthAvailabilityController {
       });
 
       return res.status(200).json({
-        message: 'Providers, por mês, listados com sucesso!',
+        message: 'Mês listado com sucesso!',
         availability,
         status: true,
       });
     } catch (err) {
-      return res.status(500).json({
-        message: 'Problema ao listar providers',
+      return res.status(400).json({
+        message: 'Problema ao listar mês!',
         status: true,
         erro: err.message,
       });

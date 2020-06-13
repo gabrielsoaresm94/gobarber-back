@@ -5,41 +5,57 @@ import ShowProfileService from '@modules/users/services/ShowProfileService';
 
 export default class ProfileController {
   public async show(req: Request, res: Response): Promise<Response> {
-    const user_id = req.user.id;
+    try {
+      const user_id = req.user.id;
 
-    const showProfile = container.resolve(ShowProfileService);
+      const showProfile = container.resolve(ShowProfileService);
 
-    const user = await showProfile.execute({ user_id });
+      const user = await showProfile.execute({ user_id });
 
-    delete user.password;
+      delete user.password;
 
-    return res.status(200).json({
-      message: 'Perfil encontrado com sucesso',
-      user,
-      status: true,
-    });
+      return res.status(200).json({
+        message: 'Perfil encontrado com sucesso',
+        user,
+        status: true,
+      });
+    } catch (err) {
+      return res.status(400).json({
+        message: 'Problemas para encontrar perfil!',
+        status: false,
+        erro: err.message,
+      });
+    }
   }
 
   public async update(req: Request, res: Response): Promise<Response> {
-    const user_id = req.user.id;
-    const { name, email, old_password, password } = req.body;
+    try {
+      const user_id = req.user.id;
+      const { name, email, old_password, password } = req.body;
 
-    const updateProfile = container.resolve(UpdateProfileService);
+      const updateProfile = container.resolve(UpdateProfileService);
 
-    const user = await updateProfile.execute({
-      user_id,
-      name,
-      email,
-      old_password,
-      password,
-    });
+      const user = await updateProfile.execute({
+        user_id,
+        name,
+        email,
+        old_password,
+        password,
+      });
 
-    delete user.password;
+      delete user.password;
 
-    return res.status(201).json({
-      message: 'Perfil atualizado com sucesso!',
-      user,
-      status: true,
-    });
+      return res.status(201).json({
+        message: 'Perfil atualizado com sucesso!',
+        user,
+        status: true,
+      });
+    } catch (err) {
+      return res.status(400).json({
+        message: 'Problemas para atualizar perfil!',
+        status: false,
+        erro: err.message,
+      });
+    }
   }
 }

@@ -1,10 +1,10 @@
-import { startOfHour, isBefore, getHours } from 'date-fns';
+import { startOfHour, isBefore, getHours, format } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '../../../shared/errors/AppError';
-
 import Appointment from '../infra/typeorm/entities/Appointment';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
+import INotificationsRepository from '../../notifications/repositories/INotificationsRepository';
 
 interface IRequestDTO {
   provider_id: string;
@@ -16,11 +16,17 @@ interface IRequestDTO {
 class CreateAppointmentService {
   private appointmentsRepository: IAppointmentsRepository;
 
+  private notificationsRepository: INotificationsRepository;
+
   constructor(
     @inject('AppointmentsRepository')
     appointmentsRepository: IAppointmentsRepository,
+
+    @inject('NotificationsRepository')
+    notificationsRepository: INotificationsRepository,
   ) {
     this.appointmentsRepository = appointmentsRepository;
+    this.notificationsRepository = notificationsRepository;
   }
 
   public async execute({
@@ -30,6 +36,7 @@ class CreateAppointmentService {
   }: IRequestDTO): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
 
+    /* Problemas */
     if (isBefore(appointmentDate, Date.now())) {
       throw new AppError(
         'Não é permitido criar um appointment em uma data antiga!',
@@ -42,7 +49,7 @@ class CreateAppointmentService {
 
     if (getHours(appointmentDate) < 8 || getHours(appointmentDate) > 17) {
       throw new AppError(
-        'Você não pode criar um appointment entre 8hrs e 17hrs!',
+        'Novos appointments são permitidos apenas entre 8hrs e 17hrs!',
       );
     }
 
@@ -58,6 +65,13 @@ class CreateAppointmentService {
       provider_id,
       user_id,
       date: appointmentDate,
+    });
+
+    const dateFormatted = format(appointmentDate, "dd/MM/yyyy 'às' HH:mm");
+
+    await this.notificationsRepository.create({
+      recipient_id: provider_id,
+      content: `Novo agendamento para o dia ${dateFormatted}`,
     });
 
     return appointment;

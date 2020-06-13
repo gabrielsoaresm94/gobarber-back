@@ -1,7 +1,9 @@
 import 'reflect-metadata';
+import 'dotenv/config';
 
 import express from 'express';
 import cors from 'cors';
+import { isCelebrate } from 'celebrate';
 import 'express-async-errors';
 
 import routes from './routes';
@@ -18,10 +20,39 @@ app.use(express.json());
 app.use('/files', express.static(uploadConfig.uploadsFolder));
 app.use(routes);
 
+// app.use(errors());
+// Middleware para substituir errors()
+app.use(
+  (
+    err: any,
+    _req: express.Request,
+    res: express.Response,
+    _next: express.NextFunction,
+  ) => {
+    if (isCelebrate(err)) {
+      return res.status(400).json({
+        message: 'Problemas no corpo ou parâmetros da requisição',
+        status: false,
+        erro: err.joi.message,
+        metadata: {
+          source: err.meta.source,
+          keys: [],
+        },
+      });
+    }
+
+    return res.status(500).json({
+      message: 'Internal server error',
+      status: false,
+      erro: err.message,
+    });
+  },
+);
+
 app.use(
   (
     err: Error,
-    req: express.Request,
+    _req: express.Request,
     res: express.Response,
     _: express.NextFunction,
   ) => {
@@ -32,11 +63,10 @@ app.use(
       });
     }
 
-    console.error(err);
-
     return res.status(500).json({
-      message: 'Internal server error', // err.message,
+      message: 'Internal server error',
       status: false,
+      erro: err.message,
     });
   },
 );
