@@ -20,7 +20,7 @@ class ListProviderMonthAvailabilityService {
   private appointmentRepository: IAppointmentsRepository;
 
   constructor(
-    @inject('AppointmentRepository')
+    @inject('AppointmentsRepository') // Correto é AppointmentsRepository e n AppointmentRepository
     appointmentRepository: IAppointmentsRepository,
   ) {
     this.appointmentRepository = appointmentRepository;
