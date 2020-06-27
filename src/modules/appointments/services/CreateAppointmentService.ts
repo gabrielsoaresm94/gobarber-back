@@ -36,7 +36,6 @@ class CreateAppointmentService {
   }: IRequestDTO): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
 
-    /* Problemas */
     if (isBefore(appointmentDate, Date.now())) {
       throw new AppError(
         'Não é permitido criar um appointment em uma data antiga!',
@@ -61,7 +60,7 @@ class CreateAppointmentService {
       throw new AppError('Este appointment já está reservado!');
     }
 
-    const appointment = this.appointmentsRepository.create({
+    const appointment = await this.appointmentsRepository.create({
       provider_id,
       user_id,
       date: appointmentDate,
@@ -73,6 +72,8 @@ class CreateAppointmentService {
       recipient_id: provider_id,
       content: `Novo agendamento para o dia ${dateFormatted}`,
     });
+
+    // console.log(appointment);
 
     return appointment;
   }

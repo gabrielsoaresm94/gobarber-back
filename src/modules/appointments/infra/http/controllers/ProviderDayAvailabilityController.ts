@@ -23,8 +23,8 @@ export default class ProviderDayAvailabilityController {
 
       return res.status(200).json({
         message: 'Dias listados com sucesso!',
-        availability,
         status: true,
+        metadata: availability,
       });
     } catch (err) {
       return res.status(400).json({

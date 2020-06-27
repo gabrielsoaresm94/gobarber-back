@@ -20,8 +20,7 @@ app.use(express.json());
 app.use('/files', express.static(uploadConfig.uploadsFolder));
 app.use(routes);
 
-// app.use(errors());
-// Middleware para substituir errors()
+// Middleware para erros no corpo, da requisição
 app.use(
   (
     err: any,

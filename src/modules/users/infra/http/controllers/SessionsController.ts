@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import AuthenticateUserService from '../../../services/AuthenticateUserService';
 
@@ -15,13 +16,13 @@ export default class SessionsController {
         password,
       });
 
-      delete user.password;
-
       return res.status(200).json({
         message: 'Autenticação completa!',
-        user,
-        token,
         status: true,
+        metadata: {
+          user: classToClass(user),
+          token,
+        },
       });
     } catch (err) {
       return res.status(400).json({

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
+import { classToClass } from 'class-transformer';
 import UpdateUserAvatarService from '../../../services/UpdateUserAvatarService';
 
 export default class UserAvatarController {
@@ -13,12 +14,10 @@ export default class UserAvatarController {
         avatarFilename: req.file.filename,
       });
 
-      delete user.password;
-
       return res.status(200).json({
         message: 'Avatar atualizado com sucesso!',
-        user,
         status: true,
+        metadata: classToClass(user),
       });
     } catch (err) {
       return res.status(400).json({

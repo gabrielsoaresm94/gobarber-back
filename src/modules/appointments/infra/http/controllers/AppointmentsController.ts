@@ -27,8 +27,8 @@ export default class AppointmentsController {
 
       return res.status(200).json({
         message: 'Appointment realizado com sucesso!',
-        appointment,
         status: true,
+        metadata: appointment,
       });
     } catch (err) {
       return res.status(400).json({

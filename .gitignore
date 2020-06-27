@@ -5,3 +5,6 @@ tmp/*
 .env
 coverage
 ormconfig.json
+
+# guarda README e tutoriais
+*.md

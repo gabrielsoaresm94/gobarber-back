@@ -37,6 +37,7 @@ class ListProvidersAppointmentsService {
       },
     );
 
+    // console.log(appointments);
     return appointments;
   }
 }

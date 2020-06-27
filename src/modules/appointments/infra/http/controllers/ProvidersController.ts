@@ -16,8 +16,8 @@ export default class ProvidersController {
 
       return res.status(200).json({
         message: 'Providers listados com sucesso!',
-        providers,
         status: true,
+        metadata: providers,
       });
     } catch (err) {
       return res.status(400).json({

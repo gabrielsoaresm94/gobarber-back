@@ -22,8 +22,8 @@ export default class ProviderMonthAvailabilityController {
 
       return res.status(200).json({
         message: 'Mês listado com sucesso!',
-        availability,
         status: true,
+        metadata: availability,
       });
     } catch (err) {
       return res.status(400).json({

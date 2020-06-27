@@ -7,13 +7,17 @@ export default class ProviderAppointmentsController {
   public async index(req: Request, res: Response): Promise<Response> {
     try {
       const provider_id = req.user.id;
-      const { day, month, year } = req.body;
+      // const { day, month, year } = req.query;
+
+      const day = Number(req.query.day);
+      const month = Number(req.query.month);
+      const year = Number(req.query.year);
 
       const listProvidersAppointments = container.resolve(
         ListProvidersAppointmentsService,
       );
 
-      const appointment = await listProvidersAppointments.execute({
+      const appointments = await listProvidersAppointments.execute({
         provider_id,
         day,
         month,
@@ -21,13 +25,13 @@ export default class ProviderAppointmentsController {
       });
 
       return res.status(200).json({
-        message: 'Appointments listados com sucesso!',
-        appointment,
+        message: 'Agendamentos listados com sucesso!',
         status: true,
+        metadata: appointments,
       });
     } catch (err) {
       return res.status(400).json({
-        message: 'Problemas ao listar appointments!',
+        message: 'Problemas ao listar agendamentos!',
         status: false,
         erro: err.message,
       });
