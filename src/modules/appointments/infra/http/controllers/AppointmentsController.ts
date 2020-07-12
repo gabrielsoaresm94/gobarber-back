@@ -26,13 +26,13 @@ export default class AppointmentsController {
       });
 
       return res.status(200).json({
-        message: 'Appointment realizado com sucesso!',
+        message: 'Agendamento realizado com sucesso!',
         status: true,
         metadata: appointment,
       });
     } catch (err) {
       return res.status(400).json({
-        message: 'Problema ao realizar appointment!',
+        message: 'Problema ao realizar agendamento!',
         status: false,
         erro: err.message,
       });

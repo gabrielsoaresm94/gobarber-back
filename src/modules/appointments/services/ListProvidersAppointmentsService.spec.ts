@@ -1,17 +1,22 @@
 // Jest mantem problemas com a syntaxe @, no import
 import 'reflect-metadata';
 
+import FakeCacheProvider from '../../../shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 import ListProvidersAppointmentsService from './ListProvidersAppointmentsService';
 
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
 let listProvidersAppointments: ListProvidersAppointmentsService;
+let fakeCacheProvider: FakeCacheProvider;
 
 describe('ListProviderAppointments', () => {
   beforeEach(() => {
     fakeAppointmentsRepository = new FakeAppointmentsRepository();
+    fakeCacheProvider = new FakeCacheProvider();
+
     listProvidersAppointments = new ListProvidersAppointmentsService(
       fakeAppointmentsRepository,
+      fakeCacheProvider,
     );
   });
 

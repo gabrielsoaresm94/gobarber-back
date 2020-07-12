@@ -16,7 +16,7 @@ providersRouter.use(ensureAuthenticated);
 
 providersRouter.get('/', providersController.index);
 
-providersRouter.post(
+providersRouter.get(
   '/:provider_id/month-availability',
   celebrate({
     [Segments.PARAMS]: {
@@ -26,7 +26,7 @@ providersRouter.post(
   providerMonthAvailabilityController.index,
 );
 
-providersRouter.post(
+providersRouter.get(
   '/:provider_id/day-availability',
   celebrate({
     [Segments.PARAMS]: {

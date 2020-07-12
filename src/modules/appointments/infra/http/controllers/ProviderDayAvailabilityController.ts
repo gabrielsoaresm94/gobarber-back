@@ -7,7 +7,7 @@ export default class ProviderDayAvailabilityController {
   public async index(req: Request, res: Response): Promise<Response> {
     try {
       const { provider_id } = req.params;
-      const { day, month, year } = req.body;
+      const { day, month, year } = req.query;
 
       /* Problemas */
       const listProviderDayAvailability = container.resolve(
@@ -16,9 +16,9 @@ export default class ProviderDayAvailabilityController {
 
       const availability = await listProviderDayAvailability.execute({
         provider_id,
-        day,
-        month,
-        year,
+        day: Number(day),
+        month: Number(month),
+        year: Number(year),
       });
 
       return res.status(200).json({
@@ -28,7 +28,7 @@ export default class ProviderDayAvailabilityController {
       });
     } catch (err) {
       return res.status(400).json({
-        message: 'Problema ao listar mês!',
+        message: 'Problema ao listar dias!',
         status: true,
         erro: err.message,
       });

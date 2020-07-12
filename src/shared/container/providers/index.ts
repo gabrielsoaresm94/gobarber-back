@@ -11,6 +11,13 @@ import EtherealMailProvider from './MailProvider/implementations/EtherealMailPro
 import IMailTemplateProvider from './MailTemplateProvider/models/IMailTemplateProvider';
 import HandlebarsMailTemplateProvider from './MailTemplateProvider/implementations/HandlebarsMailTemplateProvider';
 
+import ICacheProvider from './CacheProvider/models/ICacheProvider';
+import RedisCacheProvider from './CacheProvider/implementations/RedisCacheProvider';
+
+const providers = {
+  redis: RedisCacheProvider,
+};
+
 container.registerSingleton<IStorageProvider>(
   'StorageProvider',
   DiskStorageProvider,
@@ -27,3 +34,5 @@ container.registerInstance<IMailProvider>(
     ? container.resolve(EtherealMailProvider)
     : container.resolve(SESMailProvider),
 );
+
+container.registerSingleton<ICacheProvider>('CacheProvider', providers.redis);

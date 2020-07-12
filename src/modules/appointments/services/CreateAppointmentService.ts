@@ -1,6 +1,7 @@
 import { startOfHour, isBefore, getHours, format } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import AppError from '../../../shared/errors/AppError';
 import Appointment from '../infra/typeorm/entities/Appointment';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
@@ -18,15 +19,21 @@ class CreateAppointmentService {
 
   private notificationsRepository: INotificationsRepository;
 
+  private cacheProvider: ICacheProvider;
+
   constructor(
     @inject('AppointmentsRepository')
     appointmentsRepository: IAppointmentsRepository,
 
     @inject('NotificationsRepository')
     notificationsRepository: INotificationsRepository,
+
+    @inject('CacheProvider')
+    cacheProvider: ICacheProvider,
   ) {
     this.appointmentsRepository = appointmentsRepository;
     this.notificationsRepository = notificationsRepository;
+    this.cacheProvider = cacheProvider;
   }
 
   public async execute({
@@ -54,6 +61,7 @@ class CreateAppointmentService {
 
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
       appointmentDate,
+      provider_id,
     );
 
     if (findAppointmentInSameDate) {
@@ -73,7 +81,12 @@ class CreateAppointmentService {
       content: `Novo agendamento para o dia ${dateFormatted}`,
     });
 
-    // console.log(appointment);
+    await this.cacheProvider.invalidate(
+      `provider-appointments:${provider_id}:${format(
+        appointmentDate,
+        'yyyy-M-d',
+      )}`,
+    );
 
     return appointment;
   }
