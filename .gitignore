@@ -3,8 +3,10 @@ tmp/*
 !tmp/.gitkeep
 .vscode/
 .env
-coverage
 ormconfig.json
 
-# guarda README e tutoriais
-*.md
+build
+coverage
+
+Dockerfile
+docker-compose.yml

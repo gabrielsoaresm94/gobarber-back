@@ -1,0 +1,236 @@
+## GoBarber
+## Author: Gabriel Soares
+## Description: Api da aplicação GoBarber
+openapi: 3.0.2
+
+## Descrição e dados de suporte do projeto
+info:
+  title: API - GoBarber
+  version: "1.0"
+  description: Documentação API do GoBarber
+  # contact:
+  #   name:
+  #   url:
+  #   email:
+
+## Site da Aplicação
+# externalDocs:
+#   description: Site GoBarber
+#   url:
+
+## Endereços da API
+servers:
+  - url: http://localhost
+    description: Endpoint Desenvolvimento
+
+## Categorias
+# TODO
+
+## Componentes de segurança e modelos de resposta
+components:
+  # Esquemas de segurança
+  securitySchemes:
+    # ID Token
+    Token:
+      type: http
+      description:
+        Authenticação padrão por meio do Bearer Token de um
+        usuário logado na aplicação.
+      scheme: bearer
+      bearerFormat: JWT
+
+## Caminhos
+paths:
+
+  ## Seções
+  "/sessions":
+    post:
+      tags:
+      - Seções
+      security:
+        - Token: []
+      summary: Login de usuário
+      description:
+        Endpoint para o usuário poder logar, com seu email e senha.
+      responses:
+        "200":
+          description: Usuário logado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Autenticação completa!
+                  status:
+                    type: boolean
+                    example: true
+                  metadata:
+                    type: object
+                    properties:
+                      user:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: 3j8078e3-d453-4dfg-biof-7as6788a39d7
+                          name:
+                            type: string
+                            example:
+                          email:
+                            type: string
+                            example:
+                          avatar:
+                            type: string
+                            example:
+                          created_at:
+                            type: string
+                            example:
+                          updated:
+                            type: string
+                            example:
+                          avatar_url:
+                            type: string
+                            example:
+                      token:
+                        type: string
+                        example:
+
+        # "401":
+        #   description: Erro de autenticação, verifique as credenciais do usuário.
+        #   content:
+        #     application/json:
+        #       schema:
+        #         "$ref": "#/components/schemas/ErrorModel"
+        # "403":
+        #   description: Usuário não tem permissão para executar a operação.
+        #   content:
+        #     application/json:
+        #       schema:
+        #         "$ref": "#/components/schemas/ErrorModel"
+        # "404":
+        #   description: Administrador não encontrado.
+        #   content:
+        #     application/json:
+        #       schema:
+        #         "$ref": "#/components/schemas/ErrorModel"
+
+  ## Usuários
+  "/users":
+    post:
+      tags:
+      - Usuários
+      summary: Cadastro de usuário
+      description:
+        Endpoint para o usuário poder logar, com seu email e senha.
+      responses:
+        "200":
+          description: Usuário cadastrado.
+
+  "/users/avatar":
+    put:
+      tags:
+      - Usuários
+      security:
+        - Token: []
+      summary: Atualização de avatar
+      description:
+        Endpoint para o usuário poder atualizar seu avatar.
+      responses:
+        "200":
+          description: Avatar atualizado.
+
+  ## Agendamentos
+  "/appointments":
+    post:
+      tags:
+      - Agendamentos
+      security:
+        - Token: []
+      summary: Cria agendamento
+      description:
+        Endpoint para o usuário poder criar agendamento.
+      responses:
+        "200":
+          description: Agendamento criado.
+
+  "/appointments/me":
+    get:
+      tags:
+      - Agendamentos
+      security:
+        - Token: []
+      summary: Retorna uma lista com os agendamentos
+      description:
+        Endpoint para o usuário poder listar agendamentos.
+      responses:
+        "200":
+          description: Agendamentos listados.
+
+## Perfil
+  "/profile":
+    get:
+      tags:
+      - Perfil
+      security:
+        - Token: []
+      summary: Retorna perfil do usuário
+      description:
+        Endpoint para o usuário poder acessar perfil.
+      responses:
+        "200":
+          description: perfil retornado.
+
+    put:
+      tags:
+      - Perfil
+      security:
+        - Token: []
+      summary: Edita perfil do usuário
+      description:
+        Endpoint para o usuário poder editar perfil.
+      responses:
+        "200":
+          description: perfil editado.
+
+## Profissionais
+  "/providers":
+    get:
+      tags:
+      - Perfil
+      security:
+        - Token: []
+      summary: Retorna perfil do usuário
+      description:
+        Endpoint para o usuário poder acessar perfil.
+      responses:
+        "200":
+          description: perfil retornado.
+
+## Senha
+  "/password/forgot":
+    post:
+      tags:
+      - Senha
+      security:
+        - Token: []
+      summary: .
+      description:
+        .
+      responses:
+        "200":
+          description: .
+
+  "/password/reset":
+    post:
+      tags:
+      - Senha
+      security:
+        - Token: []
+      summary: .
+      description:
+        .
+      responses:
+        "200":
+          description: .
