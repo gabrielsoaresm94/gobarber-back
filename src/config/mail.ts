@@ -14,8 +14,8 @@ export default {
 
   defaults: {
     from: {
-      email: 'diego@rocketseat.com.br',
-      name: 'Diego',
+      email: process.env.EMAIL_ADRESS,
+      name: 'Contato',
     },
   },
 } as IMailConfig;
