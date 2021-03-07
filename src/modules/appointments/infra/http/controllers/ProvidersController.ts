@@ -2,21 +2,30 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import ListProvidersService from '@modules/appointments/services/ListProvidersService';
+import { classToClass } from 'class-transformer';
 
 export default class ProvidersController {
   public async index(req: Request, res: Response): Promise<Response> {
-    const user_id = req.user.id;
+    try {
+      const user_id = req.user.id;
 
-    const listProviders = container.resolve(ListProvidersService);
+      const listProviders = container.resolve(ListProvidersService);
 
-    const providers = await listProviders.execute({
-      user_id,
-    });
+      const providers = await listProviders.execute({
+        user_id,
+      });
 
-    return res.status(200).json({
-      message: 'Providers listados com sucesso!',
-      providers,
-      status: true,
-    });
+      return res.status(200).json({
+        message: 'Providers listados com sucesso!',
+        status: true,
+        metadata: classToClass(providers),
+      });
+    } catch (err) {
+      return res.status(400).json({
+        message: 'Problema ao listar providers!',
+        status: true,
+        erro: err.message,
+      });
+    }
   }
 }

@@ -7,27 +7,27 @@ export default class ProviderMonthAvailabilityController {
   public async index(req: Request, res: Response): Promise<Response> {
     try {
       const { provider_id } = req.params;
-      const { month, year } = req.body;
+      const { month, year } = req.query;
 
-      // Problema
+      /* Problemas */
       const listProviderMonthAvailability = container.resolve(
         ListProviderMonthAvailabilityService,
       );
 
       const availability = await listProviderMonthAvailability.execute({
         provider_id,
-        month,
-        year,
+        month: Number(month),
+        year: Number(year),
       });
 
       return res.status(200).json({
-        message: 'Providers, por mês, listados com sucesso!',
-        availability,
+        message: 'Mês listado com sucesso!',
         status: true,
+        metadata: availability,
       });
     } catch (err) {
-      return res.status(500).json({
-        message: 'Problema ao listar providers',
+      return res.status(400).json({
+        message: 'Problema ao listar mês!',
         status: true,
         erro: err.message,
       });

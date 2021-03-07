@@ -21,7 +21,7 @@ class ListProviderDayAvailabilityService {
   private appointmentRepository: IAppointmentsRepository;
 
   constructor(
-    @inject('AppointmentRepository')
+    @inject('AppointmentsRepository')
     appointmentRepository: IAppointmentsRepository,
   ) {
     this.appointmentRepository = appointmentRepository;

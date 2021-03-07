@@ -6,23 +6,36 @@ import CreateAppointmentService from '@modules/appointments/services/CreateAppoi
 
 export default class AppointmentsController {
   public async create(req: Request, res: Response): Promise<Response> {
-    const user_id = req.user.id;
-    const { provider_id, date } = req.body;
+    try {
+      const user_id = req.user.id;
+      const { provider_id, date } = req.body;
 
-    const parsedDate = parseISO(date);
+      // Lógica para caso o middleware
+      // altere o tipo da propriedade date, no corpo
+      let parsedDate = null;
+      if (typeof date === 'string') {
+        parsedDate = parseISO(date);
+      }
 
-    const createAppointment = container.resolve(CreateAppointmentService);
+      const createAppointment = container.resolve(CreateAppointmentService);
 
-    const appointment = await createAppointment.execute({
-      date: parsedDate,
-      provider_id,
-      user_id,
-    });
+      const appointment = await createAppointment.execute({
+        date: parsedDate || date,
+        provider_id,
+        user_id,
+      });
 
-    return res.status(200).json({
-      message: 'Appointment realizado com sucesso!',
-      appointment,
-      status: true,
-    });
+      return res.status(200).json({
+        message: 'Agendamento realizado com sucesso!',
+        status: true,
+        metadata: appointment,
+      });
+    } catch (err) {
+      return res.status(400).json({
+        message: 'Problema ao realizar agendamento!',
+        status: false,
+        erro: err.message,
+      });
+    }
   }
 }
