@@ -107,8 +107,6 @@ describe('ListProviders', () => {
       month: 7,
     });
 
-    console.log(availability);
-
     expect(availability).toEqual(
       expect.arrayContaining([
         { day: 19, available: true },

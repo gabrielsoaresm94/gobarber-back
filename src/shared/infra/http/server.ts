@@ -72,12 +72,6 @@ app.use(
   },
 );
 
-// const routes = express.Router();
-// routes.get('/', (req, res) => {
-//   res.status(200).send('Hello World!');
-// });
-// app.use(routes);
-
 app.listen(3001, () => {
   // eslint-disable-next-line no-console
   console.log('Server started on port 3001!');

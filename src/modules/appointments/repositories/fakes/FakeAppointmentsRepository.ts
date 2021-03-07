@@ -35,7 +35,6 @@ class AppointmentRepository implements IAppointmentsRepository {
 
     this.appointments.push(appointment);
 
-    // console.log(date);
     return appointment;
   }
 

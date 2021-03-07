@@ -6,18 +6,19 @@
 </div>
 
 ## Como instalar
-Será necessário ter o [nodejs]() instalado. Em sistemas linux, utilizando seu gerenciador de pacotes, pode-se fazer isso com `sudo {gerenciador} install nodejs`, por exemplo:
-
-TODO - versionamento do node
+Será necessário ter o [nodejs]() instalado, com a versão 13.6.0. Em sistemas linux, utilizando seu gerenciador de pacotes, pode-se fazer isso com `sudo {gerenciador} install nodejs`, por exemplo:
 
 ```bash
-sudo apt-get install nodejs
+sudo apt-get install nodejs@13.6.0
 ```
-### Bancos de dados
+
+Caso esteja usando outra versão do node no momento, pode-se optar por um gerenciador de versionamento, dentre eles: [nvm](https://github.com/nvm-sh/nvm) (feito para node) ou [asdf](https://github.com/asdf-vm/asdf) (que funciona para outras tecnologias).
+
 Abra o diretório do repositório clonado e instale as dependências:
 ```
 npm install
 ```
+### Bancos de dados
 Também será necessário dispor dos bancos: `Postgres`, `MongoDB` e `Redis`. Pode-se fazer uso dos mesmos, através de suas imagens Dockers, com a criação de containers, para o ambiente de desenvolvimento:
 
 ```bash
