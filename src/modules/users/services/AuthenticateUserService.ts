@@ -42,9 +42,6 @@ class AuthenticateUserService {
       throw new AppError('Email ou senha incorretos!');
     }
 
-    // user.password - Senha criptografada
-    // password - Senha não-criptografada
-
     const passwordMatched = await this.hashProvider.compareHash(
       password,
       user.password,
